@@ -1,0 +1,19 @@
+"""
+My program, that fails when I have D + U + V + W in the set
+"""
+
+import sys
+from pprint import pprint
+
+failures = ["D", "U", "V", "W"]
+in_lines = list(sys.stdin)
+
+# pprint(in_lines)
+has_failed_tests = all(f"{failed_case}\n" in in_lines for failed_case in failures)
+
+if has_failed_tests:
+    print("FAILED")
+    sys.exit(1)
+else:
+    print("SUCCEEDED")
+sys.exit(1 if has_failed_tests else 0)
