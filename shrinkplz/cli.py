@@ -10,8 +10,12 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser(
     description="""
-Help shrink test data
+Bisect your test data to find the smallest size.
 
+During a shrinking session, mark data as passing or
+failing. Shrinkplz will shrink down your data as
+much as possible until it finds the smallest data
+that still causes a test failure.
 """
 )
 
