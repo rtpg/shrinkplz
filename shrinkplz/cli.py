@@ -1,15 +1,17 @@
-import argparse
-import os
-from dataclasses import dataclass
-from pathlib import Path
 from shutil import copyfile
 import shutil
 from typing import Literal
 import subprocess
+from shrinkplz.state import SessionStepState
+import argparse
+
+import os
+from pathlib import Path
 
 parser = argparse.ArgumentParser(
     description="""
-Help with shrinking failing test data
+Help shrink test data
+
 """
 )
 
@@ -25,27 +27,6 @@ mark_args.add_argument("result", choices=["pass", "fail", "invalid"])
 script_args = subparsers.add_parser("script", help="Run a scripted shrinking session")
 script_args.add_argument("script_path")
 script_args.add_argument("file_path")
-
-
-def main():
-    print("Hello from shrinkplz!")
-
-
-@dataclass
-class SessionStepState:
-    """
-    This is the state of the current session
-    """
-
-    # the size of an individual bucket
-    bucket_size: int
-    # the current index in the file where we should cut
-    # next (or where we should re-insert cut data)
-    cut_idx: int
-    # the number of drops we've done at this bucket size
-    drop_count: int
-    # the size of our current-smallest data
-    current_smallest: int
 
 
 SHRINKPLZ_DATA = Path(".shrinkplz")
@@ -104,27 +85,12 @@ def mark_result_in_log(state: SessionStepState, result: MarkResult):
 
 def save_state(state: SessionStepState):
     with open(SHRINKPLZ_DATA / "current-state", "w") as f:
-        for line in [
-            str(state.bucket_size),
-            str(state.cut_idx),
-            str(state.drop_count),
-            str(state.current_smallest),
-        ]:
-            f.write(f"{line}\n")
+        state.write_into_file(f)
 
 
 def read_state() -> SessionStepState:
     with open(SHRINKPLZ_DATA / "current-state", "r") as f:
-        bucket_size = int(f.readline())
-        cut_idx = int(f.readline())
-        drop_count = int(f.readline())
-        current_smallest = int(f.readline())
-        return SessionStepState(
-            bucket_size=bucket_size,
-            cut_idx=cut_idx,
-            drop_count=drop_count,
-            current_smallest=current_smallest,
-        )
+        return SessionStepState.read_from_file(f)
 
 
 def progress_state_if_needed(state: SessionStepState):
@@ -235,7 +201,7 @@ def script_cmd(file_path, script_path):
             done = mark_cmd("fail")
 
 
-if __name__ == "__main__":
+def main():
     args = parser.parse_args()
     match cmd_name := args.cmd_name:
         case "mark":
