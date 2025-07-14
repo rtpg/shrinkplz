@@ -3,7 +3,6 @@ My program, that fails when I have D + U + V + W in the set
 """
 
 import sys
-from pprint import pprint
 
 failures = ["D", "U", "V", "W"]
 in_lines = list(sys.stdin)
