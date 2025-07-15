@@ -11,5 +11,15 @@ requires-python = ">=3.12"
 dependencies = []
 license = "MIT"
 
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Topic :: Software Development :: Testing"
+]
+
+[project.urls]
+Homepage = "https://github.com/rtpg/shrinkplz"
+Repository = "https://github.com/rtpg/shrinkplz.git"
+Issues = "https://github.com/rtpg/shrinkplz/issues"
+
 [project.scripts]
 shrinkplz = "shrinkplz.cli:main"
