@@ -1,6 +1,7 @@
 from shutil import copyfile
 from typing import Literal
 from shrinkplz import SHRINKPLZ_DATA
+from shrinkplz.output import perr
 from shrinkplz.state import SessionStepState
 
 type MarkResult = Literal["pass"] | Literal["fail"] | Literal["invalid"]
@@ -50,7 +51,7 @@ def mark_input(state: SessionStepState, result: MarkResult) -> bool:
     progress_state_if_needed(state)
     if state.bucket_size == 0:
         copyfile(SHRINKPLZ_DATA / "current-smallest", "current-input")
-        print(
+        perr(
             """
 Completed our search!
 The smallest known data is copied
@@ -58,11 +59,10 @@ to current-input
 """
         )
         return True
-    print(state)
     save_state(state)
     # let's prepare the current-input
     cut_input_data(state.cut_idx, state.bucket_size)
-    print("New data available at current-input")
+    perr("New data available at current-input")
     return False
 
 

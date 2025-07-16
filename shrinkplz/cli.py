@@ -1,5 +1,6 @@
 import shutil
 import subprocess
+from shrinkplz.output import perr
 from shrinkplz.state import SessionStepState
 from shrinkplz.mark import cut_input_data, mark_input, MarkResult
 import argparse
@@ -52,16 +53,16 @@ def mark_cmd(result: MarkResult) -> bool:
     try:
         state = read_state()
     except FileNotFoundError:
-        print("Failed to read the state, are we actually in a session?")
+        perr("Failed to read the state, are we actually in a session?")
         return True
     return mark_input(state, result)
 
 
 def start_cmd(file_path: str):
     if SHRINKPLZ_DATA.exists():
-        print("A session already exists! Use abandon to get rid of it")
-        return
-    print("Starting session...")
+        perr("A session already exists! Use abandon to get rid of it")
+        return 1
+    perr("Starting session...")
     with open(file_path, "r") as f:
         initial_data = f.readlines()
     os.mkdir(SHRINKPLZ_DATA)
@@ -76,7 +77,7 @@ def start_cmd(file_path: str):
         current_smallest=initial_line_count,
     )
     cut_input_data(state.cut_idx, state.bucket_size)
-    print("Wrote first test data to current-input")
+    perr("Wrote first test data to current-input")
     save_state(state)
 
 
@@ -107,7 +108,7 @@ def main():
             start_cmd(args.file_path)
         case "abandon":
             shutil.rmtree(SHRINKPLZ_DATA)
-            print("abandoned run")
+            perr("abandoned run")
         case "script":
             script_cmd(args.file_path, args.script_path)
         case None:

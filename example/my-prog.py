@@ -7,7 +7,6 @@ import sys
 failures = ["D", "U", "V", "W"]
 in_lines = list(sys.stdin)
 
-# pprint(in_lines)
 has_failed_tests = all(f"{failed_case}\n" in in_lines for failed_case in failures)
 
 if has_failed_tests:
