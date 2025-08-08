@@ -8,7 +8,9 @@ version = "0.1.2.dev"
 description = "A command line tool to help you shrink failing test data"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "pytest>=8.4.1",
+]
 license = "MIT"
 
 classifiers = [
@@ -23,3 +25,7 @@ Issues = "https://github.com/rtpg/shrinkplz/issues"
 
 [project.scripts]
 shrinkplz = "shrinkplz.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py", "tests.py"]
