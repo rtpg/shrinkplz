@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## UNRELEASED
+## Unreleased Changes
+
+## 0.1.2 (2025-08-10)
 
 - Add a `--min-test-size` option. Shrinking will be considered complete
   once we hit the mininum test size (in lines).
@@ -11,6 +13,7 @@
   
 - Print out to stderr instead of stdout
 - Remove printing of internal data structure during marking
+
 ## 0.1.1 (2025-07-15)
 
 - Add licensing information
