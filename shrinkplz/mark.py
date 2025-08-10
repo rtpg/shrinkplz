@@ -1,6 +1,7 @@
 from shutil import copyfile
 from typing import Literal
 from shrinkplz import SHRINKPLZ_DATA
+from shrinkplz.config import Config
 from shrinkplz.output import perr
 from shrinkplz.state import SessionStepState
 
@@ -49,7 +50,7 @@ def mark_input(state: SessionStepState, result: MarkResult) -> bool:
             state.cut_idx += state.bucket_size
 
     progress_state_if_needed(state)
-    if state.bucket_size == 0:
+    if state.looks_completed():
         copyfile(SHRINKPLZ_DATA / "current-smallest", "current-input")
         perr(
             """
@@ -62,7 +63,7 @@ to current-input
     save_state(state)
     # let's prepare the current-input
     cut_input_data(state.cut_idx, state.bucket_size)
-    perr("New data available at current-input")
+    perr("Smallest failed test data written to current-input")
     return False
 
 
