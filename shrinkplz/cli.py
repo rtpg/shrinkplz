@@ -17,7 +17,8 @@ During a shrinking session, mark data as passing or
 failing. Shrinkplz will shrink down your data as
 much as possible until it finds the smallest data
 that still causes a test failure.
-"""
+""",
+    formatter_class=argparse.RawTextHelpFormatter,
 )
 
 parser.add_argument(

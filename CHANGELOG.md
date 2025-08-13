@@ -2,6 +2,8 @@
 
 ## Unreleased Changes
 
+- Improve the help text layout
+
 ## 0.1.2 (2025-08-10)
 
 - Add a `--min-test-size` option. Shrinking will be considered complete
