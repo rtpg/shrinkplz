@@ -49,6 +49,15 @@ script_args.add_argument("file_path")
 SHRINKPLZ_DATA = Path(".shrinkplz")
 
 
+def cleanup_session():
+    """Remove all session data including .shrinkplz directory and current-input file"""
+    if SHRINKPLZ_DATA.exists():
+        shutil.rmtree(SHRINKPLZ_DATA)
+    current_input = Path("current-input")
+    if current_input.exists():
+        current_input.unlink()
+
+
 def save_state(state: SessionStepState):
     with open(SHRINKPLZ_DATA / "current-state", "w") as f:
         state.write_into_file(f)
@@ -73,8 +82,8 @@ def mark_cmd(config: Config, result: MarkResult) -> bool:
 
 def start_cmd(config, file_path: str):
     if SHRINKPLZ_DATA.exists():
-        perr("A session already exists! Use abandon to get rid of it")
-        return 1
+        perr("Clearing existing session...")
+        cleanup_session()
     perr("Starting session...")
     with open(file_path, "r") as f:
         initial_data = f.readlines()
@@ -122,7 +131,7 @@ def main():
         case "start":
             start_cmd(config, args.file_path)
         case "abandon":
-            shutil.rmtree(SHRINKPLZ_DATA)
+            cleanup_session()
             perr("abandoned run")
         case "script":
             script_cmd(config, args.file_path, args.script_path)
