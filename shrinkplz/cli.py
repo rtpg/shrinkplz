@@ -82,7 +82,6 @@ def mark_cmd(config: Config, result: MarkResult) -> bool:
 
 def start_cmd(config, file_path: str):
     if SHRINKPLZ_DATA.exists():
-        perr("Clearing existing session...")
         cleanup_session()
     perr("Starting session...")
     with open(file_path, "r") as f:
