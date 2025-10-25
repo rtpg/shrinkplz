@@ -10,12 +10,19 @@ At the end of the `shrinkplz` session, you should have a (locally) minimal input
 Installation
 ------------
 
-This command is available on PyPI
+This command is available on PyPI:
 
 ``` sh
-uv tool add shrinkplz
+uv tool install shrinkplz
 ```
 
+You can install the latest code on `main` by pointing directly at the repo:
+
+```sh
+uv tool install git+https://github.com/rtpg/shrinkplz
+```
+
+`
 Use Cases
 ---------
 
