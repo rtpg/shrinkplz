@@ -3,6 +3,7 @@
 ## Unreleased Changes
 
 - Improve the help text layout
+- Clear out existing sessions when starting new sessions or script sessions 
 
 ## 0.1.2 (2025-08-10)
 

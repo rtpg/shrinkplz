@@ -60,6 +60,10 @@ def read_state(config: Config) -> SessionStepState:
         return SessionStepState.read_from_file(config, f)
 
 
+def abandon_cmd(config: Config) -> None:
+    shutil.rmtree(SHRINKPLZ_DATA)
+
+
 def mark_cmd(config: Config, result: MarkResult) -> bool:
     """
     Mark command, returns whether we are 'done'
@@ -74,8 +78,9 @@ def mark_cmd(config: Config, result: MarkResult) -> bool:
 
 def start_cmd(config, file_path: str):
     if SHRINKPLZ_DATA.exists():
-        perr("A session already exists! Use abandon to get rid of it")
-        return 1
+        perr("Abandoning existing session...")
+        # run the abandon command first
+        abandon_cmd(config)
     perr("Starting session...")
     with open(file_path, "r") as f:
         initial_data = f.readlines()
@@ -123,7 +128,7 @@ def main():
         case "start":
             start_cmd(config, args.file_path)
         case "abandon":
-            shutil.rmtree(SHRINKPLZ_DATA)
+            abandon_cmd(config)
             perr("abandoned run")
         case "script":
             script_cmd(config, args.file_path, args.script_path)
